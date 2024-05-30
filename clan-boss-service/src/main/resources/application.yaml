@@ -1,0 +1,35 @@
+server:
+  port: 8082
+
+spring:
+  liquibase:
+    enabled: true
+    change-log: db/changelog/changeset/changeset-1.groovy
+  application:
+    name: clan-boss-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/clan-boss-service-db
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
+

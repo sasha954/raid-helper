@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+    <changeSet id="2024-03-20-01" author="Oleksandr Fomenko">
+        <comment>Create table for clan boss.</comment>
+
+        <createTable tableName="clan_boss">
+            <column name="boss_id" type="varchar(128)">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="clan_boss"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2024-03-20-02" author="Oleksandr Fomenko">
+        <comment>Create table for clan boss info.</comment>
+        <createTable tableName="clan_boss_info">
+            <column name="info_id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="level" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_hp" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attack_power" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="defence" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="speed" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accuracy" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resistance" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="artifact_filter" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+            <column name="boss_id" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="clan_boss_info" baseColumnNames="boss_id"
+                                 constraintName="fk_clan_boss_clan_boss_info"
+                                 referencedTableName="clan_boss"
+                                 referencedColumnNames="boss_id"/>
+        <rollback>
+            <dropAllForeignKeyConstraints baseTableName="clan_boss_info"/>
+            <dropTable tableName="clan_boss_info"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2024-04-06-01" author="Oleksandr Fomenko">
+        <comment>Fill table with Demon Lord</comment>
+        <insert tableName="clan_boss">
+            <column name="boss_id">RH_DEMON_LORD</column>
+            <column name="name">Demon Lord</column>
+            <column name="location">DEMON_LORD</column>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="2024-04-06-02" author="Oleksandr Fomenko">
+        <comment>Fill tables with Demon Lord's info</comment>
+        <!-- EASE -->
+        <insert tableName="clan_boss_info">
+            <column name="level">EASY</column>
+            <column name="max_hp">19020000</column>
+            <column name="attack_power">1350</column>
+            <column name="defence">294</column>
+            <column name="speed">90</column>
+            <column name="accuracy">0</column>
+            <column name="resistance">30</column>
+            <column name="artifact_filter">{"min":{"stars": 3, "rarity": "UNCOMMON"}, "max":{"stars": 5, "rarity":
+                "COMMON"}}
+            </column>
+            <column name="boss_id">RH_DEMON_LORD</column>
+        </insert>
+        <!-- NORMAL -->
+        <insert tableName="clan_boss_info">
+            <column name="level">NORMAL</column>
+            <column name="max_hp">60620000</column>
+            <column name="attack_power">1699</column>
+            <column name="defence">369</column>
+            <column name="speed">120</column>
+            <column name="accuracy">30</column>
+            <column name="resistance">50</column>
+            <column name="artifact_filter">{"min":{"stars": 3, "rarity": "RARE"}, "max":{"stars": 5, "rarity":
+                "UNCOMMON"}}
+            </column>
+            <column name="boss_id">RH_DEMON_LORD</column>
+        </insert>
+        <!-- HARD -->
+        <insert tableName="clan_boss_info">
+            <column name="level">HARD</column>
+            <column name="max_hp">194130000</column>
+            <column name="attack_power">2033</column>
+            <column name="defence">442</column>
+            <column name="speed">140</column>
+            <column name="accuracy">50</column>
+            <column name="resistance">75</column>
+            <column name="artifact_filter">{"min":{"stars": 3, "rarity": "RARE"}, "max":{"stars": 5, "rarity":
+                "RARE"}}
+            </column>
+            <column name="boss_id">RH_DEMON_LORD</column>
+        </insert>
+        <!-- BRUTAL -->
+        <insert tableName="clan_boss_info">
+            <column name="level">BRUTAL</column>
+            <column name="max_hp">361550000</column>
+            <column name="attack_power">2750</column>
+            <column name="defence">598</column>
+            <column name="speed">160</column>
+            <column name="accuracy">75</column>
+            <column name="resistance">100</column>
+            <column name="artifact_filter">{"min":{"stars": 4, "rarity": "RARE"}, "max":{"stars": 5, "rarity":
+                "LEGENDARY"}}
+            </column>
+            <column name="boss_id">RH_DEMON_LORD</column>
+        </insert>
+        <!-- NIGHTMARE -->
+        <insert tableName="clan_boss_info">
+            <column name="level">NIGHTMARE</column>
+            <column name="max_hp">652750000</column>
+            <column name="attack_power">3898</column>
+            <column name="defence">847</column>
+            <column name="speed">170</column>
+            <column name="accuracy">150</column>
+            <column name="resistance">150</column>
+            <column name="artifact_filter">{"min":{"stars": 4, "rarity": "RARE"}, "max":{"stars": 5, "rarity":
+                "LEGENDARY"}}
+            </column>
+            <column name="boss_id">RH_DEMON_LORD</column>
+        </insert>
+        <!-- ULTRA-NIGHTMARE -->
+        <insert tableName="clan_boss_info">
+            <column name="level">ULTRA-NIGHTMARE</column>
+            <column name="max_hp">1171200000</column>
+            <column name="attack_power">6993</column>
+            <column name="defence">1520</column>
+            <column name="speed">190</column>
+            <column name="accuracy">225</column>
+            <column name="resistance">225</column>
+            <column name="artifact_filter">{"min":{"stars": 5, "rarity": "RARE"}, "max":{"stars": 6, "rarity":
+                "LEGENDARY"}}
+            </column>
+            <column name="boss_id">RH_DEMON_LORD</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

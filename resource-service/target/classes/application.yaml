@@ -1,0 +1,25 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: resource-service
+
+#spring.data.mongodb.uri: mongodb://mongo_RH_Username:mongo_RH_Password@localhost:27017/resource-service-db
+spring.data.mongodb.uri: mongodb://localhost:27017/resource-service-db
+
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"

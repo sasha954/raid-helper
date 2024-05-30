@@ -1,0 +1,20 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: clan-boss-drop-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/clan-boss-drop-service-db
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

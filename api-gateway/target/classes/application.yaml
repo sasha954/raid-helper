@@ -1,0 +1,50 @@
+#spring:
+#  profiles.active: default
+#  application.name: api-gateway
+#  cloud.config:
+#    failFast: true
+#    retry:
+#      initialInterval: 3000
+#      multiplier: 1.3
+#      maxInterval: 10000
+#      maxAttempts: 20
+#    uri: http://localhost:8888
+#spring.config.import: "configserver:"
+server:
+  port: 8080
+
+spring:
+  application.name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: resource-service
+          uri: lb://resource-service
+          predicates:
+            - Path=/api/resources/**
+        - id: clan-boss-drop-service
+          uri: lb://clan-boss-drop-service
+          predicates:
+            - Path=/api/drops/**
+        - id: clan-boss-service
+          uri: lb://clan-boss-service
+          predicates:
+            - Path=/api/clan-bosses/**
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
